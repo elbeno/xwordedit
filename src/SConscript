@@ -1,0 +1,15 @@
+Import('env')
+
+import subprocess
+p = subprocess.Popen(['pkg-config', '--cflags', 'libglademm-2.4'],
+                     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+out, err = p.communicate()
+env.Append(CCFLAGS = out)
+
+p = subprocess.Popen(['pkg-config', '--libs', 'libglademm-2.4'],
+                     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+out, err = p.communicate()
+env.Append(LINKFLAGS = out)
+
+env.Program(env['EXE_NAME'], Glob('*.cpp'), LIBS=[])
+env.Install(env['BINDIR'], env['EXE_NAME'])
